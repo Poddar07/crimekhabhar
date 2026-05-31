@@ -98,19 +98,16 @@
         const resp = await fetch(url);
         if (resp.ok) {
           const data = await resp.json();
-          results = Object.values(data).map((d) => (d && !d.error ? d : null));
+          results = Object.values(data).filter(function (item) {
+            return item && !item.error;
+          });
         }
       } catch (e) {
         results = [];
       }
     }
 
-    if (!results.length) {
-      if (!apiKey) {
-        root.innerHTML = `<div class="weather-error">Configure weather API key.</div>`;
-        return;
-      }
-
+    if (!results.length && apiKey) {
       results = await Promise.all(
         cities.map((city) =>
           fetchCurrent(city, apiKey, units).catch(function () {
@@ -121,6 +118,7 @@
     }
 
     const slides = results.filter(Boolean).map(renderSlide).join("");
+
     if (!slides) {
       root.innerHTML = `<div class="weather-error">Weather data unavailable.</div>`;
       return;
@@ -148,4 +146,3 @@
     renderWeather();
   }
 })();
-

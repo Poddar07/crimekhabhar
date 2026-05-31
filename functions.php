@@ -37,6 +37,7 @@ add_action( 'after_setup_theme', 'bharat_bulletin_setup' );
 function bharat_bulletin_scripts() {
 	wp_enqueue_style( 'bharat-bulletin-fonts', 'https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap', array(), null );
 	wp_enqueue_style( 'bharat-bulletin-style', get_stylesheet_uri(), array( 'bharat-bulletin-fonts' ), wp_get_theme()->get( 'Version' ) );
+	wp_enqueue_script( 'bharat-bulletin-config', get_template_directory_uri() . '/assets/js/config.js', array(), wp_get_theme()->get( 'Version' ), true );
 	wp_enqueue_script( 'bharat-bulletin-main', get_template_directory_uri() . '/assets/js/main.js', array(), wp_get_theme()->get( 'Version' ), true );
 	wp_localize_script(
 		'bharat-bulletin-main',

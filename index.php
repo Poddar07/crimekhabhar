@@ -80,9 +80,6 @@ function bharat_bulletin_post_badge( $post ) {
 			<div class="empty-state"><?php esc_html_e( 'अभी कोई खबर नहीं मिली।', 'bharat-bulletin' ); ?></div>
 		<?php endif; ?>
 
-		<?php bharat_bulletin_ad_slot( 'in_feed' ); ?>
-
-
 		<?php if ( $visual_posts ) : ?>
 			<section class="section">
 				<div class="section-head">
@@ -105,4 +102,3 @@ function bharat_bulletin_post_badge( $post ) {
 </main>
 
 <?php get_footer(); ?>
-
