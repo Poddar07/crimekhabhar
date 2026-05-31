@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="क्राइम खबर - Bihar-focused Hindi news website powered by WordPress REST API.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="क्राइम खबर - Bihar Latest Hindi News">
+  <meta property="og:description" content="Bihar crime news, politics, districts, jobs, education, weather temperature and visual stories.">
+  <meta property="og:image" content="assets/images/crime-khabar-logo.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>क्राइम खबर Bihar News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
+  <link rel="shortcut icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="masthead">
+      <div class="masthead-inner">
+        <a class="site-brand" href="index.html">
+          <img class="fallback-logo" src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+          <span class="brand-text">
+            <strong>क्राइम खबर</strong>
+            <span>बिहार की हर सच्ची खबर</span>
+          </span>
+        </a>
+        <form class="search-form">
+          <input type="search" placeholder="बिहार की खबर खोजें...">
+          <button type="submit">खोजें</button>
+        </form>
+        <div class="header-status" aria-label="Live updates">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Live Updates</span>
+        </div>
+        <button class="icon-button menu-toggle" type="button" aria-label="Toggle menu">☰</button>
+      </div>
+    </header>
+
+    <nav class="main-nav" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <ul class="main-menu"></ul>
+      </div>
+    </nav>
+
+    <section class="breaking">
+      <div class="breaking-inner">
+        <strong class="breaking-label">Breaking News</strong>
+        <div class="ticker-viewport">
+          <ul class="ticker-list">
+            <li><a href="#top">खबरें लोड हो रही हैं...</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <ul class="topic-strip"></ul>
+
+    <main class="content-shell" id="top">
+      <div class="main-content">
+        <p class="filter-status" aria-live="polite">WordPress से खबरें लोड हो रही हैं...</p>
+
+        <section class="lead-grid"></section>
+
+        <section class="section" id="visual-stories">
+          <div class="section-head">
+            <h2 class="section-title">दृश्य कहानियाँ</h2>
+          </div>
+          <div class="visual-strip"></div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <section class="side-widget trending-widget">
+          <h2>Trending Bihar News</h2>
+          <ol class="ranked-list" data-bihar-trending></ol>
+        </section>
+        <section class="side-widget weather-widget" id="category-weather">
+          <h2>बिहार मौसम</h2>
+          <div class="weather-temp" data-weather-temp></div>
+          <div class="weather-carousel" data-weather-carousel aria-label="Weather for top cities"></div>
+        </section>
+        <section class="side-widget newsletter" id="newsletter">
+          <h2>बिहार न्यूज़ अलर्ट</h2>
+          <form>
+            <input type="email" placeholder="Email address">
+            <button type="submit">Subscribe</button>
+          </form>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <section>
+          <div class="footer-brand">
+            <img src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+            <div>
+              <strong>क्राइम खबर</strong>
+              <span>बिहार की हर सच्ची खबर</span>
+            </div>
+          </div>
+        </section>
+        <section class="footer-links">
+          <h3>Sections</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#visual-stories">दृश्य कहानियाँ</a></li>
+            <li><a href="#category-weather">Weather</a></li>
+          </ul>
+        </section>
+        <section class="footer-links">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms-and-conditions.html">Terms and Conditions</a></li>
+            <li><a href="#newsletter">Advertise with us</a></li>
+          </ul>
+        </section>
+        <section>
+          <h3>Contact</h3>
+          <ul class="footer-contact">
+            <li>News Desk: Patna, Bihar</li>
+            <li>Email: news@example.com</li>
+            <li>Crime Khabar Digital Desk</li>
+          </ul>
+        </section>
+      </div>
+      <div class="copyright">© 2026 क्राइम खबर. All rights reserved.</div>
+    </footer>
+  </div>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/weather.js"></script>
+  <script src="assets/js/wordpress-api.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="क्राइम खबर - समाचार विवरण">
+  <title>समाचार विवरण - क्राइम खबर</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
+  <link rel="shortcut icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="masthead">
+      <div class="masthead-inner">
+        <a class="site-brand" href="index.html">
+          <img class="fallback-logo" src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+          <span class="brand-text">
+            <strong>क्राइम खबर</strong>
+            <span>बिहार की हर सच्ची खबर</span>
+          </span>
+        </a>
+        <form class="search-form">
+          <input type="search" placeholder="बिहार की खबर खोजें...">
+          <button type="submit">खोजें</button>
+        </form>
+        <div class="header-status" aria-label="Live updates">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Live Updates</span>
+        </div>
+        <button class="icon-button menu-toggle" type="button" aria-label="Toggle menu">☰</button>
+      </div>
+    </header>
+
+    <nav class="main-nav" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <ul class="main-menu"></ul>
+      </div>
+    </nav>
+
+    <main class="content-shell detail-page" id="top">
+      <div class="main-content">
+        <article class="story-card featured" id="article-container">
+          <div class="empty-state">खबर लोड हो रही है...</div>
+        </article>
+
+        <section class="share-section" id="share-section" aria-label="Share this article">
+          <div class="share-buttons">
+            <button id="share-facebook" class="share-btn share-facebook">Facebook</button>
+            <button id="share-twitter" class="share-btn share-twitter">Twitter</button>
+            <button id="share-whatsapp" class="share-btn share-whatsapp">WhatsApp</button>
+            <button id="share-telegram" class="share-btn share-telegram">Telegram</button>
+            <button id="share-copy" class="share-btn share-copy">Link कॉपी करें</button>
+          </div>
+        </section>
+
+        <section class="section related-news">
+          <div class="section-head">
+            <h2 class="section-title">संबंधित खबरें</h2>
+          </div>
+          <div class="news-grid" id="related-articles"></div>
+        </section>
+      </div>
+      <aside class="sidebar" id="right-sidebar">
+        <section class="side-widget trending-widget">
+          <h2>Trending Bihar News</h2>
+          <ol class="ranked-list" data-bihar-trending></ol>
+        </section>
+        <section class="side-widget weather-widget">
+          <h2>बिहार मौसम</h2>
+          <div class="weather-temp" data-weather-temp></div>
+          <div class="weather-carousel" data-weather-carousel aria-label="Weather for top cities"></div>
+        </section>
+        <section class="side-widget" id="read-next">
+          <h2>पढ़ने के लिये</h2>
+          <div class="plain-list" id="read-next-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <section>
+          <div class="footer-brand">
+            <img src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+            <div>
+              <strong>क्राइम खबर</strong>
+              <span>बिहार की हर सच्ची खबर</span>
+            </div>
+          </div>
+        </section>
+        <section class="footer-links">
+          <h3>Sections</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#visual-stories">Visual Stories</a></li>
+            <li><a href="category.html">Categories</a></li>
+          </ul>
+        </section>
+        <section class="footer-links">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms-and-conditions.html">Terms and Conditions</a></li>
+          </ul>
+        </section>
+        <section>
+          <h3>Contact</h3>
+          <ul class="footer-contact">
+            <li>News Desk: Patna, Bihar</li>
+            <li>Email: news@example.com</li>
+          </ul>
+        </section>
+      </div>
+      <div class="copyright">© 2026 क्राइम खबर. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/weather.js"></script>
+  <script src="assets/js/detail.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
