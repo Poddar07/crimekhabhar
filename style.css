@@ -37,6 +37,7 @@ body {
   color: var(--bb-ink);
   font-family: var(--bb-font);
   line-height: 1.5;
+  animation: bb-page-enter 0.42s ease both;
 }
 
 a {
@@ -52,6 +53,18 @@ img {
 
 .site-wrap {
   min-height: 100vh;
+}
+
+@keyframes bb-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .network-bar {
@@ -348,10 +361,31 @@ img {
 }
 
 .main-menu a {
+  position: relative;
   display: inline-flex;
   align-items: center;
   min-height: 48px;
   border-bottom: 3px solid transparent;
+  transition: color 0.18s ease;
+}
+
+.main-menu > li > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--bb-red);
+  transition: transform 0.22s ease;
+}
+
+.main-menu > li:hover > a::after,
+.main-menu > li:focus-within > a::after,
+.main-menu > .current-menu-item > a::after {
+  transform: scaleX(1);
 }
 
 .submenu-toggle {
@@ -487,7 +521,6 @@ img {
 .main-menu a:hover,
 .main-menu .current-menu-item > a {
   color: var(--bb-blue);
-  border-bottom-color: var(--bb-red);
 }
 
 .main-nav.is-open .nav-inner {
@@ -537,7 +570,7 @@ img {
 	color: #242424;
 	white-space: nowrap;
 	will-change: transform;
-	animation: bb-ticker 34s linear infinite;
+	animation: bb-ticker 58s linear infinite;
 }
 
 .ticker-list li {
@@ -594,6 +627,15 @@ img {
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.topic-strip a:hover,
+.topic-strip a:focus-visible {
+  border-color: rgba(226, 27, 45, 0.35);
+  box-shadow: 0 8px 18px rgba(17, 20, 95, 0.08);
+  outline: none;
+  transform: translateY(-2px);
 }
 
 .content-shell {
@@ -621,6 +663,17 @@ img {
 
 .story-card {
   overflow: hidden;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.story-card:hover {
+  border-color: rgba(226, 27, 45, 0.28);
+  box-shadow: 0 14px 34px rgba(17, 35, 72, 0.1);
+  transform: translateY(-2px);
+}
+
+.story-card.featured:hover {
+  transform: none;
 }
 
 .story-card.featured {
@@ -661,9 +714,24 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.42s ease;
+}
+
+.story-card:hover .story-media img,
+.visual-card:hover img {
+  transform: scale(1.035);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
   .masthead,
   .masthead::before,
   .masthead::after {
@@ -895,11 +963,50 @@ img {
 }
 
 /* Share buttons for detail page */
-.share-section { margin-top: 18px; }
-.share-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-.share-btn { padding: 10px 12px; border-radius: 6px; border: 1px solid var(--bb-line); background: #fff; cursor: pointer; font-weight: 800; }
+.article-meta {
+  align-items: center;
+}
+
+.article-share-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.share-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.share-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.share-btn:hover,
+.share-btn:focus-visible {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  outline: none;
+  transform: translateY(-1px);
+}
+
 .share-facebook { background: #1877f2; color: #fff; }
-.share-twitter { background: #1da1f2; color: #fff; }
+.share-twitter { background: #111; color: #fff; }
 .share-whatsapp { background: #25d366; color: #fff; }
 .share-telegram { background: #0088cc; color: #fff; }
 .share-copy { background: var(--bb-red); color: #fff; }
@@ -986,6 +1093,12 @@ img {
   background: #222;
   color: #fff;
   position: relative;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.visual-card:hover {
+  box-shadow: 0 16px 34px rgba(17, 35, 72, 0.14);
+  transform: translateY(-2px);
 }
 
 .visual-card img {
@@ -994,6 +1107,11 @@ img {
   min-height: 210px;
   object-fit: cover;
   opacity: 0.82;
+  transition: opacity 0.22s ease, transform 0.42s ease;
+}
+
+.visual-card:hover img {
+  opacity: 0.92;
 }
 
 .visual-card h3 {
@@ -1019,6 +1137,12 @@ img {
 
 .side-widget {
   padding: 14px;
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.side-widget:hover {
+  box-shadow: 0 14px 32px rgba(17, 35, 72, 0.08);
+  transform: translateY(-1px);
 }
 
 .side-widget h2 {
@@ -1068,6 +1192,11 @@ img {
   border-bottom: 1px solid var(--bb-line);
   font-weight: 900;
   line-height: 1.35;
+  transition: transform 0.18s ease;
+}
+
+.ranked-list li:hover {
+  transform: translateX(3px);
 }
 
 .ranked-list a {
@@ -1093,6 +1222,8 @@ img {
   color: #fff;
   font-size: 13px;
   font-weight: 900;
+  box-shadow: 0 0 0 0 rgba(226, 27, 45, 0.35);
+  animation: bb-rank-pulse 3.2s ease-in-out infinite;
 }
 
 .plain-list li {
@@ -1333,6 +1464,7 @@ img {
   background: linear-gradient(180deg, #fff, #f7fbff);
   border-radius: 8px;
   border: 1px solid rgba(32, 74, 145, 0.06);
+  animation: bb-weather-glow 4.6s ease-in-out infinite;
 }
 
 .weather-city { font-weight: 800; color: var(--bb-blue); margin-bottom: 6px; }
@@ -1342,6 +1474,28 @@ img {
 .weather-desc { font-size:12px; color:var(--bb-muted); margin-top:6px; }
 .weather-prev, .weather-next { border:0; background:transparent; font-size:20px; cursor:pointer; }
 .weather-error { color: var(--bb-red); font-weight:700; }
+
+@keyframes bb-rank-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(226, 27, 45, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px rgba(226, 27, 45, 0);
+  }
+}
+
+@keyframes bb-weather-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+
+  50% {
+    box-shadow: 0 10px 22px rgba(255, 255, 255, 0.18);
+  }
+}
 
 .site-footer {
   margin-top: 18px;

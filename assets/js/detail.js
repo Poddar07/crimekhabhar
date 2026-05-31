@@ -264,6 +264,25 @@
     return `detail.html?id=${encodeURIComponent(post.id)}`;
   }
 
+  function shareUrl(post) {
+    const url = new URL(window.location.href);
+    url.search = `?id=${encodeURIComponent(post.id)}`;
+    url.hash = "";
+    return url.toString();
+  }
+
+  function shareIcon(name) {
+    const icons = {
+      facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v5h4v-5h3.2l.8-4h-4V9c0-.7.3-1 1-1Z"/></svg>',
+      x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h4.8l4.1 5.7L18 4h2.1l-6.2 7 6.7 9H16l-4.6-6.4L5.7 20H3.6l6.8-7.7L4 4Zm3.2 1.6 9.6 12.8h1.8L9 5.6H7.2Z"/></svg>',
+      whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a8.8 8.8 0 0 0-7.5 13.4L3.4 21l4.7-1.1A8.8 8.8 0 1 0 12 3Zm0 2a6.8 6.8 0 0 1 0 13.6c-1.1 0-2.1-.2-3-.7l-.4-.2-2.4.6.6-2.3-.3-.4A6.8 6.8 0 0 1 12 5Zm-2.3 3.5c-.2 0-.5 0-.7.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.6 4 3.5 2 .8 2.4.5 2.9.5.4-.1 1.3-.6 1.5-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.5-.3l-1.6-.8c-.2-.1-.4-.1-.6.2l-.7.9c-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.7-.7-1.2-1.5-1.4-1.8-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.7-1.7c-.2-.4-.4-.4-.7-.4Z"/></svg>',
+      telegram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4.6 18 20c-.2 1-.8 1.2-1.6.7l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.9.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L6.6 14 2.1 12.6c-1-.3-1-1 .2-1.4L19.8 4.4c.8-.3 1.5.2 1.2 1.2Z"/></svg>',
+      copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-1v-2h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v1H8V7Zm-4 4a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6Zm3-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H7Z"/></svg>',
+    };
+
+    return icons[name] || "";
+  }
+
   function renderArticle(post) {
     const container = document.getElementById("article-container");
 
@@ -271,13 +290,24 @@
       return;
     }
 
+    const publishedDate = new Date(post.date).toLocaleDateString("hi-IN");
+
     container.innerHTML = `
       <div class="article-media">
         ${renderImage(getFeaturedImage(post, "large"))}
       </div>
       <div class="story-body">
         <h1>${escapeHtml(stripTags(post.title.rendered))}</h1>
-        <div class="meta"><span>${new Date(post.date).toLocaleDateString("hi-IN")}</span></div>
+        <div class="meta article-meta">
+          <span>${publishedDate}</span>
+          <span class="article-share-inline" aria-label="Share this article">
+            <a id="share-facebook" class="share-btn share-facebook" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">${shareIcon("facebook")}</a>
+            <a id="share-twitter" class="share-btn share-twitter" href="#" target="_blank" rel="noopener" aria-label="Share on X">${shareIcon("x")}</a>
+            <a id="share-whatsapp" class="share-btn share-whatsapp" href="#" target="_blank" rel="noopener" aria-label="Share on WhatsApp">${shareIcon("whatsapp")}</a>
+            <a id="share-telegram" class="share-btn share-telegram" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram">${shareIcon("telegram")}</a>
+            <button id="share-copy" class="share-btn share-copy" type="button" aria-label="Copy article link">${shareIcon("copy")}</button>
+          </span>
+        </div>
         <div class="article-content">${post.content.rendered || ""}</div>
       </div>
     `;
@@ -293,11 +323,11 @@
       related.innerHTML = posts
         .slice(0, 3)
         .map((post) => `
-          <article class="story-card">
+          <article class="story-card related-card">
             <a class="story-media" href="${postUrl(post)}">${renderImage(getFeaturedImage(post, "medium_large"))}</a>
             <div class="story-body">
               <h3><a href="${postUrl(post)}">${escapeHtml(stripTags(post.title.rendered))}</a></h3>
-              <p class="summary">${escapeHtml(stripTags(post.excerpt.rendered).slice(0, 120))}</p>
+              <p class="summary">${escapeHtml(stripTags(post.excerpt.rendered).slice(0, 140))}</p>
             </div>
           </article>
         `)
@@ -308,19 +338,22 @@
       readNext.innerHTML = posts
         .slice(0, 6)
         .map((post) => `
-          <div class="read-item">
+          <article class="read-item">
             <a href="${postUrl(post)}">
               <div class="read-thumb"><img src="${escapeAttr(getFeaturedImage(post, "thumbnail"))}" alt=""></div>
-              <div class="read-title">${escapeHtml(stripTags(post.title.rendered))}</div>
+              <div class="read-body">
+                <div class="read-title">${escapeHtml(stripTags(post.title.rendered))}</div>
+                <div class="read-meta">${escapeHtml(new Date(post.date).toLocaleDateString("hi-IN"))}</div>
+              </div>
             </a>
-          </div>
+          </article>
         `)
         .join("");
     }
   }
 
   function setupShare(post) {
-    const url = window.location.href;
+    const url = shareUrl(post);
     const title = stripTags(post.title.rendered);
 
     const fb = document.getElementById("share-facebook");
@@ -329,16 +362,17 @@
     const tg = document.getElementById("share-telegram");
     const cp = document.getElementById("share-copy");
 
-    if (fb) fb.onclick = () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "fb", "width=600,height=400");
-    if (tw) tw.onclick = () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, "tw", "width=600,height=400");
-    if (wa) wa.onclick = () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} - ${url}`)}`, "wa");
-    if (tg) tg.onclick = () => window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, "tg");
+    if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    if (tw) tw.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+    if (wa) wa.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} - ${url}`)}`;
+    if (tg) tg.href = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
     if (cp) {
+      const originalContent = cp.innerHTML;
       cp.onclick = () => {
         navigator.clipboard.writeText(url).then(() => {
-          cp.textContent = "कॉपी हो गया!";
+          cp.textContent = "Copied";
           setTimeout(() => {
-            cp.textContent = "Link कॉपी करें";
+            cp.innerHTML = originalContent;
           }, 1800);
         });
       };

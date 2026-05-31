@@ -46,6 +46,7 @@
 			<section class="footer-links">
 				<h3><?php esc_html_e( 'Legal', 'bharat-bulletin' ); ?></h3>
 				<ul>
+					<li><a href="<?php echo esc_url( home_url( '/about-us.html' ) ); ?>"><?php esc_html_e( 'About Us', 'bharat-bulletin' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/privacy-policy.html' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'bharat-bulletin' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/terms-and-conditions.html' ) ); ?>"><?php esc_html_e( 'Terms and Conditions', 'bharat-bulletin' ); ?></a></li>
 					<li><a href="#"><?php esc_html_e( 'Advertise with us', 'bharat-bulletin' ); ?></a></li>

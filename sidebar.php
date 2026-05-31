@@ -32,10 +32,6 @@ $trending_posts = bharat_bulletin_recent_posts( 5 );
 		<div class="weather-carousel" data-weather-carousel aria-label="Weather for top cities"></div>
 	</section>
 
-	<?php if ( is_active_sidebar( 'homepage-sidebar' ) ) : ?>
-		<?php dynamic_sidebar( 'homepage-sidebar' ); ?>
-	<?php endif; ?>
-
 	<section class="side-widget newsletter">
 		<h2><?php esc_html_e( 'बिहार न्यूज़ अलर्ट', 'bharat-bulletin' ); ?></h2>
 		<form>

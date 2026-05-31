@@ -159,7 +159,7 @@
     }
 
     menu.innerHTML =
-      `<li class="current-menu-item"><a href="index.html">Home</a></li>` +
+      `<li class="current-menu-item"><a href="index.html">होम</a></li>` +
       roots
         .sort((a, b) => String(a.name).localeCompare(String(b.name)))
         .map((item) => {
