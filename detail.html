@@ -69,7 +69,7 @@
           <h2>Trending Bihar News</h2>
           <ol class="ranked-list" data-bihar-trending></ol>
         </section>
-        <section class="side-widget weather-widget">
+        <section class="side-widget weather-widget" id="category-weather">
           <h2>बिहार मौसम</h2>
           <div class="weather-temp" data-weather-temp></div>
           <div class="weather-carousel" data-weather-carousel aria-label="Weather for top cities"></div>
@@ -95,18 +95,18 @@
         <section class="footer-links">
           <h3>सेक्शन</h3>
           <ul>
-            <li><a href="/">होम</a></li>
-            <li><a href="/#visual-stories">दृश्य कहानियाँ</a></li>
-            <li><a href="/wp-content/themes/crimekhabhar/category.html">कैटेगरी</a></li>
+            <li><a data-theme-href="index.html">होम</a></li>
+            <li><a data-theme-href="index.html#visual-stories">दृश्य कहानियाँ</a></li>
+            <li><a data-theme-href="category.html">कैटेगरी</a></li>
           </ul>
         </section>
         <section class="footer-links">
           <h3>Legal</h3>
           <ul>
             
-            <li><a href="/wp-content/themes/crimekhabhar/about-us.html">About Us</a></li>
-            <li><a href="/wp-content/themes/crimekhabhar/privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="/wp-content/themes/crimekhabhar/terms-and-conditions.html">Terms and Conditions</a></li>
+            <li><a data-theme-href="about-us.html">About Us</a></li>
+            <li><a data-theme-href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a data-theme-href="terms-and-conditions.html">Terms and Conditions</a></li>
           </ul>
         </section>
         <section>
@@ -131,6 +131,10 @@
 
       document.querySelectorAll("[data-theme-src]").forEach(function (node) {
         node.src = asset(node.dataset.themeSrc);
+      });
+
+      document.querySelectorAll("[data-theme-href]").forEach(function (node) {
+        node.href = asset(node.dataset.themeHref);
       });
 
       ["assets/js/config.js", "assets/js/weather.js", "assets/js/detail.js", "assets/js/main.js"].forEach(function (path) {

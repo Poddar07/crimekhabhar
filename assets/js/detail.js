@@ -18,8 +18,8 @@
 
     if (menu && menuCategories.length) {
       menu.innerHTML = [
-        `<li><a href="/">होम</a></li>`,
-        ...menuCategories.slice(0, 6).map((item) => `<li><a href="${categoryUrl(item)}">${escapeHtml(item.label)}</a></li>`)
+        `<li class="current-menu-item"><a href="/">होम</a></li>`,
+        ...menuCategories.map(renderCategoryMenuItem)
       ].join("");
     }
 
@@ -37,6 +37,17 @@
     const slug = item && item.slugs && item.slugs.length ? item.slugs[0] : item && item.slug ? item.slug : "";
     const path = slug ? `category.html?category=${encodeURIComponent(slug)}` : "category.html";
     return themeBase ? `${themeBase}/${path}` : path;
+  }
+
+  function renderCategoryMenuItem(item) {
+    const children = item.children && item.children.length ? `<div class="sub-menu-wrap">${renderCategoryList(item.children)}</div>` : "";
+    const toggle = item.children && item.children.length ? `<button type="button" class="submenu-toggle" aria-expanded="false" aria-label="Toggle subcategories">▾</button>` : "";
+
+    return `<li><a href="${categoryUrl(item)}">${escapeHtml(item.label)}</a>${toggle}${children}</li>`;
+  }
+
+  function renderCategoryList(items) {
+    return `<ul>${items.map(renderCategoryMenuItem).join("")}</ul>`;
   }
 
   async function loadCategories() {

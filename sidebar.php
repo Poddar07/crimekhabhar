@@ -28,7 +28,7 @@ $trending_posts = bharat_bulletin_recent_posts( 5 );
 
 	<section class="side-widget weather-widget">
 		<h2><?php esc_html_e( 'बिहार मौसम', 'bharat-bulletin' ); ?></h2>
-		<div class="weather-temp" aria-hidden="true"><?php echo esc_html( bharat_bulletin_weather_temp() ); ?></div>
+		<div class="weather-temp" data-weather-temp aria-hidden="true"><?php echo esc_html( bharat_bulletin_weather_temp() ); ?></div>
 		<div class="weather-carousel" data-weather-carousel aria-label="Weather for top cities"></div>
 	</section>
 
