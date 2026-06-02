@@ -330,7 +330,7 @@
   }
 
   function getVideoLink(post) {
-    return (post.meta && (post.meta.youtube_url || post.meta.video_url)) || `detail.html?id=${post.id}`;
+    return (post.meta && (post.meta.youtube_url || post.meta.video_url)) || `/detail.html?id=${post.id}`;
   }
 
   async function fetchWordPressPosts(limit) {
@@ -375,7 +375,7 @@
   }
 
   function postUrl(post) {
-    return `detail.html?id=${encodeURIComponent(post.id)}`;
+    return `/detail.html?id=${encodeURIComponent(post.id)}`;
   }
 
   function renderLead(post) {

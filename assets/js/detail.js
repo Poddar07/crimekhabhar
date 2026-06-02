@@ -1,6 +1,7 @@
 (function () {
   const config = window.CRIME_KHABAR_CONFIG || {};
   const wordpressUrl = (config.wordpressUrl || "").replace(/\/$/, "");
+  const themeBase = window.CRIME_KHABAR_ASSET_BASE || "";
   let categories = [];
   let recommendedPost = null;
 
@@ -17,7 +18,7 @@
 
     if (menu && menuCategories.length) {
       menu.innerHTML = [
-        `<li><a href="index.html">होम</a></li>`,
+        `<li><a href="/">होम</a></li>`,
         ...menuCategories.slice(0, 6).map((item) => `<li><a href="${categoryUrl(item)}">${escapeHtml(item.label)}</a></li>`)
       ].join("");
     }
@@ -34,7 +35,8 @@
 
   function categoryUrl(item) {
     const slug = item && item.slugs && item.slugs.length ? item.slugs[0] : item && item.slug ? item.slug : "";
-    return slug ? `category.html?category=${encodeURIComponent(slug)}` : "category.html";
+    const path = slug ? `category.html?category=${encodeURIComponent(slug)}` : "category.html";
+    return themeBase ? `${themeBase}/${path}` : path;
   }
 
   async function loadCategories() {
@@ -261,7 +263,7 @@
   }
 
   function postUrl(post) {
-    return `detail.html?id=${encodeURIComponent(post.id)}`;
+    return `/detail.html?id=${encodeURIComponent(post.id)}`;
   }
 
   function shareUrl(post) {

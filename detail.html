@@ -6,16 +6,29 @@
   <meta name="description" content="क्राइम खबर - समाचार विवरण">
   <title>समाचार विवरण - क्राइम खबर</title>
   <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <link rel="icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
-  <link rel="shortcut icon" href="assets/images/crime-khabar-logo.jpeg" type="image/jpeg">
-  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      var isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost" || location.protocol === "file:";
+      var base = isLocal ? "" : "/wp-content/themes/crimekhabhar";
+
+      window.CRIME_KHABAR_ASSET_BASE = base;
+
+      function asset(path) {
+        return (base ? base + "/" : "") + path;
+      }
+
+      document.write('<link rel="icon" href="' + asset("assets/images/crime-khabar-logo.jpeg") + '" type="image/jpeg">');
+      document.write('<link rel="shortcut icon" href="' + asset("assets/images/crime-khabar-logo.jpeg") + '" type="image/jpeg">');
+      document.write('<link rel="stylesheet" href="' + asset("style.css") + '?v=20260602">');
+    })();
+  </script>
 </head>
 <body>
   <div class="site-wrap">
     <header class="masthead">
       <div class="masthead-inner">
-        <a class="site-brand" href="index.html">
-          <img class="fallback-logo" src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+        <a class="site-brand" href="/">
+          <img class="fallback-logo" data-theme-src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
           <span class="brand-text">
             <strong>क्राइम खबर</strong>
             <span>बिहार की हर सच्ची खबर</span>
@@ -72,7 +85,7 @@
       <div class="footer-inner">
         <section>
           <div class="footer-brand">
-            <img src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
+            <img data-theme-src="assets/images/crime-khabar-logo.jpeg" alt="क्राइम खबर">
             <div>
               <strong>क्राइम खबर</strong>
               <span>बिहार की हर सच्ची खबर</span>
@@ -82,18 +95,18 @@
         <section class="footer-links">
           <h3>सेक्शन</h3>
           <ul>
-            <li><a href="index.html">होम</a></li>
-            <li><a href="index.html#visual-stories">दृश्य कहानियाँ</a></li>
-            <li><a href="category.html">कैटेगरी</a></li>
+            <li><a href="/">होम</a></li>
+            <li><a href="/#visual-stories">दृश्य कहानियाँ</a></li>
+            <li><a href="/wp-content/themes/crimekhabhar/category.html">कैटेगरी</a></li>
           </ul>
         </section>
         <section class="footer-links">
           <h3>Legal</h3>
           <ul>
             
-            <li><a href="about-us.html">About Us</a></li>
-            <li><a href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="terms-and-conditions.html">Terms and Conditions</a></li>
+            <li><a href="/wp-content/themes/crimekhabhar/about-us.html">About Us</a></li>
+            <li><a href="/wp-content/themes/crimekhabhar/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/wp-content/themes/crimekhabhar/terms-and-conditions.html">Terms and Conditions</a></li>
           </ul>
         </section>
         <section>
@@ -108,10 +121,23 @@
     </footer>
   </div>
 
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/weather.js"></script>
-  <script src="assets/js/detail.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script>
+    (function () {
+      var base = window.CRIME_KHABAR_ASSET_BASE || "";
+
+      function asset(path) {
+        return (base ? base + "/" : "") + path;
+      }
+
+      document.querySelectorAll("[data-theme-src]").forEach(function (node) {
+        node.src = asset(node.dataset.themeSrc);
+      });
+
+      ["assets/js/config.js", "assets/js/weather.js", "assets/js/detail.js", "assets/js/main.js"].forEach(function (path) {
+        document.write('<script src="' + asset(path) + '?v=20260602"><\/script>');
+      });
+    })();
+  </script>
 </body>
 </html>
 

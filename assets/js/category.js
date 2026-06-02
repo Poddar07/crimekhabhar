@@ -210,7 +210,7 @@
                       .map(
                         (post) => `
                           <li>
-                            <a href="detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
+                            <a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
                             <span class="meta">${escapeHtml(formatDate(post.date))}</span>
                           </li>
                         `
@@ -241,7 +241,7 @@
           .map(
             (post) => `
               <li>
-                <a href="detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
+                <a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
                 <span class="meta">${escapeHtml(formatDate(post.date))}</span>
               </li>
             `
@@ -274,7 +274,7 @@
         (post, index) => `
           <li>
             <span class="rank">${index + 1}</span>
-            <a href="detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
+            <a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
           </li>
         `
       )

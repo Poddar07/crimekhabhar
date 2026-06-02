@@ -58,6 +58,57 @@ function bharat_bulletin_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'bharat_bulletin_scripts' );
 
+function bharat_bulletin_detail_url( $post = null ) {
+	$post = get_post( $post );
+
+	if ( ! $post ) {
+		return home_url( '/' );
+	}
+
+	return add_query_arg(
+		'id',
+		absint( $post->ID ),
+		home_url( '/detail.html' )
+	);
+}
+
+function bharat_bulletin_post_detail_permalink( $permalink, $post ) {
+	$post = get_post( $post );
+
+	if ( $post && 'post' === $post->post_type ) {
+		return bharat_bulletin_detail_url( $post );
+	}
+
+	return $permalink;
+}
+add_filter( 'post_link', 'bharat_bulletin_post_detail_permalink', 10, 2 );
+add_filter( 'post_type_link', 'bharat_bulletin_post_detail_permalink', 10, 2 );
+
+function bharat_bulletin_add_detail_rewrite_rule() {
+	add_rewrite_rule( '^detail\.html$', 'index.php?bharat_bulletin_detail=1', 'top' );
+}
+add_action( 'init', 'bharat_bulletin_add_detail_rewrite_rule' );
+
+function bharat_bulletin_detail_query_vars( $vars ) {
+	$vars[] = 'bharat_bulletin_detail';
+	return $vars;
+}
+add_filter( 'query_vars', 'bharat_bulletin_detail_query_vars' );
+
+function bharat_bulletin_render_detail_template() {
+	if ( get_query_var( 'bharat_bulletin_detail' ) ) {
+		include get_template_directory() . '/detail.html';
+		exit;
+	}
+}
+add_action( 'template_redirect', 'bharat_bulletin_render_detail_template' );
+
+function bharat_bulletin_flush_rewrite_rules() {
+	bharat_bulletin_add_detail_rewrite_rule();
+	flush_rewrite_rules();
+}
+add_action( 'after_switch_theme', 'bharat_bulletin_flush_rewrite_rules' );
+
 function bharat_bulletin_newsletter_subscribers() {
 	$subscribers = get_option( 'bharat_bulletin_newsletter_subscribers', array() );
 
