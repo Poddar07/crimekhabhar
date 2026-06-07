@@ -242,7 +242,8 @@ function bharat_bulletin_breaking_ticker() {
 				<ul class="ticker-list">
 					<?php if ( $posts ) : ?>
 						<?php foreach ( $posts as $post ) : ?>
-							<li><a href="<?php echo esc_url( get_permalink( $post ) ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></li>
+						<?php $detail_url = get_home_url() . '/wp-content/themes/crimekhabhar/detail.html?id=' . get_the_ID( $post ); ?>
+						<li><a href="<?php echo esc_url( $detail_url ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></li>
 						<?php endforeach; ?>
 					<?php else : ?>
 						<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'ताजा खबरें जल्द अपडेट होंगी', 'bharat-bulletin' ); ?></a></li>

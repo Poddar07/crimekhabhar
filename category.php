@@ -30,16 +30,29 @@ if ( $current_term instanceof WP_Term ) {
 }
 
 function bharat_bulletin_category_card( $post ) {
-	$image = has_post_thumbnail( $post ) ? get_the_post_thumbnail_url( $post, 'bb-card' ) : '';
+	$post_id = get_the_ID( $post );
+	$image = '';
+	
+	// Try full-size first, then bb-card size, then thumbnail
+	if ( has_post_thumbnail( $post_id ) ) {
+		$image = get_the_post_thumbnail_url( $post_id, 'bb-card' );
+		
+		// If bb-card doesn't exist, try full
+		if ( ! $image ) {
+			$image = get_the_post_thumbnail_url( $post_id, 'full' );
+		}
+	}
 
-	if ( false !== strpos( $image, 'crime-khabar-logo' ) ) {
+	// Filter out placeholder images
+	if ( $image && false !== strpos( $image, 'crime-khabar-logo' ) ) {
 		$image = '';
 	}
 	?>
 	<article class="category-post-card">
-		<a class="category-post-media" href="<?php echo esc_url( get_permalink( $post ) ); ?>">
-			<?php if ( $image ) : ?>
-				<img src="<?php echo esc_url( $image ); ?>" alt="">
+<?php $detail_url = get_home_url() . '/wp-content/themes/crimekhabhar/detail.html?id=' . $post_id; ?>
+	<a class="category-post-media" href="<?php echo esc_url( $detail_url ); ?>">
+			<?php if ( ! empty( $image ) ) : ?>
+				<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title( $post_id ) ); ?>" loading="lazy">
 			<?php else : ?>
 				<span class="category-post-placeholder" aria-hidden="true"></span>
 			<?php endif; ?>
@@ -47,9 +60,10 @@ function bharat_bulletin_category_card( $post ) {
 
 		<div class="category-post-body">
 			<h2>
-				<a href="<?php echo esc_url( get_permalink( $post ) ); ?>">
-					<?php echo esc_html( get_the_title( $post ) ); ?>
-				</a>
+			<?php $detail_url = get_home_url() . '/wp-content/themes/crimekhabhar/detail.html?id=' . get_the_ID( $post ); ?>
+			<a href="<?php echo esc_url( $detail_url ); ?>">
+				<?php echo esc_html( get_the_title( $post ) ); ?>
+			</a>
 			</h2>
 
 			<div class="category-post-date">

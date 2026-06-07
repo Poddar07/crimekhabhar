@@ -552,10 +552,12 @@
     }
 
     if (ticker) {
-      ticker.innerHTML = posts
+      const tickerItems = posts
         .slice(0, 12)
         .map((post) => `<li><a href="${postUrl(post)}">${escapeHtml(stripTags(post.title.rendered))}</a></li>`)
         .join("");
+      // Duplicate the ticker items for seamless infinite loop
+      ticker.innerHTML = tickerItems + tickerItems;
     }
 
     currentRecommendedPost = posts.find((post) => !used.has(post.id)) || posts[0];

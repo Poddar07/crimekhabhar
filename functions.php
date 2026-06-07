@@ -280,6 +280,48 @@ function bharat_bulletin_register_weather_route() {
 }
 add_action( 'rest_api_init', 'bharat_bulletin_register_weather_route' );
 
+/**
+ * Increment post view count
+ */
+function bharat_bulletin_increment_post_views( $request ) {
+	$post_id = absint( $request->get_param( 'post_id' ) );
+
+	if ( ! $post_id || ! get_post( $post_id ) ) {
+		return new WP_REST_Response(
+			array(
+				'success' => false,
+				'message' => __( 'Post not found.', 'bharat-bulletin' ),
+			),
+			404
+		);
+	}
+
+	$views = intval( get_post_meta( $post_id, 'bb_post_views', true ) );
+	$views++;
+	update_post_meta( $post_id, 'bb_post_views', $views );
+
+	return new WP_REST_Response(
+		array(
+			'success' => true,
+			'views'   => $views,
+		),
+		200
+	);
+}
+
+function bharat_bulletin_register_views_route() {
+	register_rest_route(
+		'bharat-bulletin/v1',
+		'/increment-view',
+		array(
+			'methods'             => 'POST',
+			'callback'            => 'bharat_bulletin_increment_post_views',
+			'permission_callback' => '__return_true',
+		)
+	);
+}
+add_action( 'rest_api_init', 'bharat_bulletin_register_views_route' );
+
 function bharat_bulletin_render_newsletter_admin_page() {
 	$subscribers = bharat_bulletin_newsletter_subscribers();
 	?>

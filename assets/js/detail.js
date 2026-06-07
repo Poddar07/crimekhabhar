@@ -277,6 +277,32 @@
     return `/detail.html?id=${encodeURIComponent(post.id)}`;
   }
 
+  async function incrementPostViews(postId) {
+    if (!wordpressUrl) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${wordpressUrl}/wp-json/bharat-bulletin/v1/increment-view`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ post_id: postId })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          const viewsElement = document.querySelector('.article-views');
+          if (viewsElement) {
+            viewsElement.textContent = `👁 ${data.views} views`;
+          }
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to increment post views.", error);
+    }
+  }
+
   function shareUrl(post) {
     const url = new URL(window.location.href);
     url.search = `?id=${encodeURIComponent(post.id)}`;
@@ -304,6 +330,7 @@
     }
 
     const publishedDate = new Date(post.date).toLocaleDateString("hi-IN");
+    const views = post.bb_post_views || 0;
 
     container.innerHTML = `
       <div class="article-media">
@@ -313,6 +340,7 @@
         <h1>${escapeHtml(stripTags(post.title.rendered))}</h1>
         <div class="meta article-meta">
           <span>${publishedDate}</span>
+          <span class="article-views">👁 ${views} views</span>
           <span class="article-share-inline" aria-label="Share this article">
             <a id="share-facebook" class="share-btn share-facebook" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">${shareIcon("facebook")}</a>
             <a id="share-twitter" class="share-btn share-twitter" href="#" target="_blank" rel="noopener" aria-label="Share on X">${shareIcon("x")}</a>
@@ -409,6 +437,7 @@
     try {
       const post = await fetchPost(id);
       renderArticle(post);
+      incrementPostViews(id);
       const related = await fetchRelated(post).catch(() => []);
       renderRelated(related);
       recommendedPost = related[0] || await loadRecommendedPost(post);

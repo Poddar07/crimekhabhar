@@ -42,9 +42,10 @@ function bharat_bulletin_post_badge( $post ) {
 							if ( false !== strpos( $image, 'crime-khabar-logo' ) ) {
 								$image = '';
 							}
+							$detail_url = get_home_url() . '/wp-content/themes/crimekhabhar/detail.html?id=' . get_the_ID( $post );
 							?>
 							<article class="story-card featured latest-slide" data-carousel-slide>
-								<a class="story-media" href="<?php echo esc_url( get_permalink( $post ) ); ?>">
+								<a class="story-media" href="<?php echo esc_url( $detail_url ); ?>">
 									<?php if ( $image ) : ?>
 										<img src="<?php echo esc_url( $image ); ?>" alt="">
 									<?php else : ?>
@@ -54,7 +55,7 @@ function bharat_bulletin_post_badge( $post ) {
 								</a>
 								<div class="story-body">
 									<div class="category-kicker"><?php esc_html_e( 'Headline', 'bharat-bulletin' ); ?></div>
-									<h1><a href="<?php echo esc_url( get_permalink( $post ) ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></h1>
+									<h1><a href="<?php echo esc_url( $detail_url ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></h1>
 									<p class="summary"><?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), 28, '...' ) ); ?></p>
 									<div class="meta"><span><?php echo esc_html( get_the_date( 'j M Y', $post ) ); ?></span></div>
 								</div>
@@ -81,8 +82,9 @@ function bharat_bulletin_post_badge( $post ) {
 						if ( false !== strpos( $image, 'crime-khabar-logo' ) ) {
 							$image = '';
 						}
-						?>
-						<a class="visual-card" href="<?php echo esc_url( get_permalink( $post ) ); ?>">
+					$detail_url = get_home_url() . '/wp-content/themes/crimekhabhar/detail.html?id=' . get_the_ID( $post );
+					?>
+					<a class="visual-card" href="<?php echo esc_url( $detail_url ); ?>">
 							<?php if ( $image ) : ?>
 								<img src="<?php echo esc_url( $image ); ?>" alt="">
 							<?php else : ?>
