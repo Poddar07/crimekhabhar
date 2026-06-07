@@ -107,6 +107,103 @@
 
   setupSubmenuToggleButtons();
 
+  function setupLatestCarousels() {
+    document.querySelectorAll("[data-latest-carousel]").forEach(function (carousel) {
+      if (carousel.dataset.carouselReady === "true") {
+        return;
+      }
+
+      const track = carousel.querySelector(".latest-carousel-track");
+      const slides = Array.from(carousel.querySelectorAll("[data-carousel-slide]"));
+      const prev = carousel.querySelector("[data-carousel-prev]");
+      const next = carousel.querySelector("[data-carousel-next]");
+      const dotsRoot = carousel.querySelector("[data-carousel-dots]");
+
+      if (!track || !slides.length) {
+        return;
+      }
+
+      carousel.dataset.carouselReady = "true";
+      let index = 0;
+      let timer = null;
+
+      if (dotsRoot) {
+        dotsRoot.innerHTML = slides
+          .map(function (_, dotIndex) {
+            return '<button type="button" class="carousel-dot" data-carousel-dot="' + dotIndex + '" aria-label="Show headline ' + (dotIndex + 1) + '"></button>';
+          })
+          .join("");
+      }
+
+      const dots = dotsRoot ? Array.from(dotsRoot.querySelectorAll("[data-carousel-dot]")) : [];
+
+      function show(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        track.style.transform = "translateX(" + index * -100 + "%)";
+
+        slides.forEach(function (slide, slideIndex) {
+          slide.classList.toggle("is-active", slideIndex === index);
+          slide.setAttribute("aria-hidden", slideIndex === index ? "false" : "true");
+        });
+
+        dots.forEach(function (dot, dotIndex) {
+          dot.classList.toggle("is-active", dotIndex === index);
+          dot.setAttribute("aria-current", dotIndex === index ? "true" : "false");
+        });
+      }
+
+      function stopAuto() {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      function startAuto() {
+        if (prefersReducedMotion || slides.length < 2) {
+          return;
+        }
+
+        stopAuto();
+        timer = window.setInterval(function () {
+          show(index + 1);
+        }, 5200);
+      }
+
+      if (prev) {
+        prev.addEventListener("click", function () {
+          show(index - 1);
+          startAuto();
+        });
+      }
+
+      if (next) {
+        next.addEventListener("click", function () {
+          show(index + 1);
+          startAuto();
+        });
+      }
+
+      dots.forEach(function (dot, dotIndex) {
+        dot.addEventListener("click", function () {
+          show(dotIndex);
+          startAuto();
+        });
+      });
+
+      carousel.addEventListener("mouseenter", stopAuto);
+      carousel.addEventListener("mouseleave", startAuto);
+      carousel.addEventListener("focusin", stopAuto);
+      carousel.addEventListener("focusout", startAuto);
+
+      show(0);
+      startAuto();
+    });
+  }
+
+  setupLatestCarousels();
+  document.addEventListener("bharat:content-updated", setupLatestCarousels);
+
   function setupScrollReveal() {
     const revealItems = document.querySelectorAll(".lead-grid, .section, .sidebar .side-widget");
 

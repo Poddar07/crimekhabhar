@@ -83,7 +83,7 @@
         const response = await fetch(url);
 
         if (response.ok) {
-          return response.json();
+          return await response.json();
         }
 
         lastError = new Error(`WordPress API request failed: ${response.status}`);
@@ -254,14 +254,27 @@
     }
 
     if (media.media_details && media.media_details.sizes && media.media_details.sizes[size]) {
-      return media.media_details.sizes[size].source_url;
+      return rejectLogoImage(media.media_details.sizes[size].source_url);
     }
 
-    return media.source_url || "";
+    return rejectLogoImage(media.source_url || "");
+  }
+
+  function rejectLogoImage(src) {
+    return src && !src.includes("crime-khabar-logo") ? src : "";
   }
 
   function renderImage(src) {
     return src ? `<img src="${escapeAttr(src)}" alt="">` : "";
+  }
+
+  function renderStoryMedia(image, url, badge) {
+    return `
+      <a class="story-media" href="${url}">
+        ${image ? renderImage(image) : '<span class="story-placeholder" aria-hidden="true"></span>'}
+        ${badge ? `<span class="media-badge">${escapeHtml(badge)}</span>` : ""}
+      </a>
+    `;
   }
 
   function getCategories(post) {
@@ -344,7 +357,7 @@
         const response = await fetch(url);
 
         if (response.ok) {
-          return response.json();
+          return await response.json();
         }
 
         lastError = new Error(`WordPress API request failed: ${response.status}`);
@@ -401,6 +414,39 @@
     `;
   }
 
+  function renderLatestCarousel(posts) {
+    const slides = posts.slice(0, 5).map((post) => {
+      const cats = getCategories(post);
+      const image = getFeaturedImage(post, "large");
+
+      return `
+        <article class="story-card featured latest-slide" data-category="${escapeAttr(cats.slugs.join(" "))}" data-carousel-slide>
+          ${renderStoryMedia(image, postUrl(post), cats.label)}
+          <div class="story-body">
+            <div class="category-kicker">Headline</div>
+            <h1><a href="${postUrl(post)}">${escapeHtml(stripTags(post.title.rendered))}</a></h1>
+            <p class="summary">${escapeHtml(stripTags(post.excerpt.rendered).slice(0, 180))}</p>
+            <div class="meta"><span>${new Date(post.date).toLocaleDateString("hi-IN")}</span></div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    return `
+      <div class="section-head latest-carousel-head">
+        <h2 class="section-title">Latest Headlines</h2>
+        <div class="carousel-controls" aria-label="Latest post controls">
+          <button class="carousel-btn" type="button" data-carousel-prev aria-label="Previous post">&lsaquo;</button>
+          <button class="carousel-btn" type="button" data-carousel-next aria-label="Next post">&rsaquo;</button>
+        </div>
+      </div>
+      <div class="latest-carousel-viewport">
+        <div class="latest-carousel-track">${slides}</div>
+      </div>
+      <div class="carousel-dots" data-carousel-dots aria-label="Latest post pages"></div>
+    `;
+  }
+
   function renderMini(post) {
     const cats = getCategories(post);
     const image = getFeaturedImage(post, "thumbnail");
@@ -440,9 +486,11 @@
     `;
   }
   function renderVisual(post) {
+    const image = getFeaturedImage(post, "medium_large");
+
     return `
       <a class="visual-card" href="${postUrl(post)}">
-        ${renderImage(getFeaturedImage(post, "medium_large"))}
+        ${image ? renderImage(image) : '<span class="visual-placeholder" aria-hidden="true"></span>'}
         <h3>${escapeHtml(stripTags(post.title.rendered))}</h3>
       </a>
     `;
@@ -485,10 +533,7 @@
       return;
     }
 
-    const used = new Set();
-    const lead = pickPosts(posts, ["breaking-news", "badi-khabar", "bihar"], 1, used)[0];
-    const miniPosts = posts.filter((post) => post.id !== lead.id).slice(0, 9);
-    miniPosts.forEach((post) => used.add(post.id));
+    const used = new Set(posts.slice(0, 5).map((post) => post.id));
     const visualPosts = await fetchVisualStories(5);
 
     const leadGrid = document.querySelector(".lead-grid");
@@ -496,7 +541,10 @@
     const ticker = document.querySelector(".ticker-list");
 
     if (leadGrid) {
-      leadGrid.innerHTML = `${renderLead(lead)}<div class="stacked-news">${miniPosts.map(renderMini).join("")}</div>`;
+      leadGrid.classList.add("latest-carousel");
+      leadGrid.setAttribute("data-latest-carousel", "");
+      leadGrid.setAttribute("aria-label", "Latest headlines");
+      leadGrid.innerHTML = renderLatestCarousel(posts);
     }
 
     if (visualStrip) {
@@ -513,6 +561,7 @@
     currentRecommendedPost = posts.find((post) => !used.has(post.id)) || posts[0];
     renderAdSlots();
     renderTrending(posts);
+    document.dispatchEvent(new CustomEvent("bharat:content-updated"));
     setStatus("");
   }
 

@@ -28,6 +28,28 @@ if ( $current_term instanceof WP_Term ) {
 		)
 	);
 }
+
+function bharat_bulletin_category_card( $post ) {
+	$image = has_post_thumbnail( $post ) ? get_the_post_thumbnail_url( $post, 'bb-card' ) : '';
+	if ( false !== strpos( $image, 'crime-khabar-logo' ) ) {
+		$image = '';
+	}
+	?>
+	<article class="category-post-card">
+		<a class="category-post-media" href="<?php echo esc_url( get_permalink( $post ) ); ?>">
+			<?php if ( $image ) : ?>
+				<img src="<?php echo esc_url( $image ); ?>" alt="">
+			<?php else : ?>
+				<span class="category-post-placeholder" aria-hidden="true"></span>
+			<?php endif; ?>
+		</a>
+		<div class="category-post-body">
+			<h2><a href="<?php echo esc_url( get_permalink( $post ) ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></h2>
+			<div class="category-post-date"><?php echo esc_html( get_the_date( 'M j Y g:i A', $post ) ); ?></div>
+		</div>
+	</article>
+	<?php
+}
 ?>
 <main class="content-shell">
 	<div class="main-content">
@@ -57,17 +79,13 @@ if ( $current_term instanceof WP_Term ) {
 							</div>
 
 							<?php if ( $child_query->have_posts() ) : ?>
-								<ol class="category-post-list">
+								<div class="category-card-grid">
 									<?php
 									while ( $child_query->have_posts() ) :
 										$child_query->the_post();
-										?>
-										<li>
-											<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-											<span class="meta"><?php echo esc_html( get_the_date() ); ?></span>
-										</li>
+										bharat_bulletin_category_card( get_post() );
 									<?php endwhile; ?>
-								</ol>
+								</div>
 							<?php else : ?>
 								<p class="empty-state"><?php esc_html_e( 'No posts yet in this subcategory.', 'bharat-bulletin' ); ?></p>
 							<?php endif; ?>
@@ -77,17 +95,13 @@ if ( $current_term instanceof WP_Term ) {
 				</div>
 			<?php else : ?>
 				<?php if ( have_posts() ) : ?>
-					<ol class="category-post-list category-post-list-full">
+					<div class="category-card-grid category-card-grid-full">
 						<?php
 						while ( have_posts() ) :
 							the_post();
-							?>
-							<li>
-								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-								<span class="meta"><?php echo esc_html( get_the_date() ); ?></span>
-							</li>
+							bharat_bulletin_category_card( get_post() );
 						<?php endwhile; ?>
-					</ol>
+					</div>
 					<?php the_posts_pagination(); ?>
 				<?php else : ?>
 					<p class="empty-state"><?php esc_html_e( 'No posts found in this subcategory.', 'bharat-bulletin' ); ?></p>

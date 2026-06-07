@@ -71,7 +71,7 @@
       try {
         const response = await fetch(url);
         if (response.ok) {
-          return response.json();
+          return await response.json();
         }
         lastError = new Error(`WordPress API request failed: ${response.status}`);
       } catch (error) {
@@ -205,18 +205,7 @@
             </div>
             ${
               posts.length
-                ? `<ol class="category-post-list">
-                    ${posts
-                      .map(
-                        (post) => `
-                          <li>
-                            <a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
-                            <span class="meta">${escapeHtml(formatDate(post.date))}</span>
-                          </li>
-                        `
-                      )
-                      .join("")}
-                  </ol>`
+                ? `<div class="category-card-grid">${posts.map(renderCategoryPostCard).join("")}</div>`
                 : `<p class="empty-state">No posts yet in this subcategory.</p>`
             }
           </section>
@@ -236,19 +225,48 @@
     }
 
     contentNode.innerHTML = `
-      <ol class="category-post-list category-post-list-full">
-        ${posts
-          .map(
-            (post) => `
-              <li>
-                <a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a>
-                <span class="meta">${escapeHtml(formatDate(post.date))}</span>
-              </li>
-            `
-          )
-          .join("")}
-      </ol>
+      <div class="category-card-grid category-card-grid-full">
+        ${posts.map(renderCategoryPostCard).join("")}
+      </div>
     `;
+  }
+
+  function renderCategoryPostCard(post) {
+    const image = getFeaturedImage(post);
+    const imageMarkup = image
+      ? `<img src="${escapeAttr(image)}" alt="">`
+      : '<span class="category-post-placeholder" aria-hidden="true"></span>';
+
+    return `
+      <article class="category-post-card">
+        <a class="category-post-media" href="/detail.html?id=${encodeURIComponent(post.id)}">
+          ${imageMarkup}
+        </a>
+        <div class="category-post-body">
+          <h2><a href="/detail.html?id=${encodeURIComponent(post.id)}">${escapeHtml(stripTags(post.title.rendered))}</a></h2>
+          <div class="category-post-date">${escapeHtml(formatDateTime(post.date))}</div>
+        </div>
+      </article>
+    `;
+  }
+
+  function getFeaturedImage(post) {
+    const media = post._embedded && post._embedded["wp:featuredmedia"] && post._embedded["wp:featuredmedia"][0];
+
+    if (!media) {
+      return "";
+    }
+
+    if (media.media_details && media.media_details.sizes) {
+      const sizes = media.media_details.sizes;
+      return rejectLogoImage((sizes.medium_large && sizes.medium_large.source_url) || (sizes.medium && sizes.medium.source_url) || "");
+    }
+
+    return rejectLogoImage(media.source_url || "");
+  }
+
+  function rejectLogoImage(src) {
+    return src && !src.includes("crime-khabar-logo") ? src : "";
   }
 
   function descendantCategoryIds(category, categories) {
@@ -293,6 +311,10 @@
     return div.innerHTML;
   }
 
+  function escapeAttr(text) {
+    return escapeHtml(text).replace(/"/g, "&quot;");
+  }
+
   function formatDate(dateText) {
     if (!dateText) {
       return "";
@@ -301,6 +323,24 @@
       return new Date(dateText).toLocaleDateString("hi-IN");
     } catch (error) {
       return "";
+    }
+  }
+
+  function formatDateTime(dateText) {
+    if (!dateText) {
+      return "";
+    }
+
+    try {
+      return new Date(dateText).toLocaleString("en-IN", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      return formatDate(dateText);
     }
   }
 })();

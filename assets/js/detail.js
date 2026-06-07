@@ -105,7 +105,7 @@
       try {
         const response = await fetch(url);
         if (response.ok) {
-          return response.json();
+          return await response.json();
         }
         lastError = new Error(`WordPress API request failed: ${response.status}`);
       } catch (error) {
@@ -190,7 +190,7 @@
         const response = await fetch(url);
 
         if (response.ok) {
-          return response.json();
+          return await response.json();
         }
 
         lastError = new Error(`WordPress API request failed: ${response.status}`);

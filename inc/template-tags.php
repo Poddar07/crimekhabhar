@@ -312,11 +312,18 @@ function bharat_bulletin_card( $args = array() ) {
 		'index'    => 1,
 	);
 	$args = wp_parse_args( $args, $defaults );
-	$image = $args['image'] ? $args['image'] : get_template_directory_uri() . '/assets/images/crime-khabar-logo.jpeg';
+	$image = $args['image'] ? $args['image'] : '';
+	if ( false !== strpos( $image, 'crime-khabar-logo' ) ) {
+		$image = '';
+	}
 	?>
 	<article class="story-card<?php echo $args['featured'] ? ' featured' : ''; ?>">
 		<a class="story-media" href="<?php echo esc_url( $args['url'] ); ?>">
-			<img src="<?php echo esc_url( $image ); ?>" alt="">
+			<?php if ( $image ) : ?>
+				<img src="<?php echo esc_url( $image ); ?>" alt="">
+			<?php else : ?>
+				<span class="story-placeholder" aria-hidden="true"></span>
+			<?php endif; ?>
 			<?php if ( $args['badge'] ) : ?>
 				<span class="media-badge"><?php echo esc_html( $args['badge'] ); ?></span>
 			<?php endif; ?>

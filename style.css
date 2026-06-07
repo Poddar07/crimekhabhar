@@ -3,7 +3,7 @@ Theme Name: Bharat Bulletin
 Theme URI: https://example.com/bharat-bulletin
 Author: Codex
 Description: A dense Hindi news theme inspired by Indian broadcast news portals, built for WordPress.
-Version: 1.0.0
+Version: 1.0.1
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -654,6 +654,97 @@ img {
   animation: bb-home-rise 0.6s 0.08s ease both;
 }
 
+.latest-carousel {
+  overflow: hidden;
+}
+
+.latest-carousel-head {
+  margin-bottom: 0;
+  align-items: flex-end;
+}
+
+.carousel-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 5px;
+}
+
+.carousel-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(226, 27, 45, 0.28);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--bb-blue-dark);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 0;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.carousel-btn:hover,
+.carousel-btn:focus-visible {
+  border-color: var(--bb-red);
+  background: var(--bb-red);
+  color: #fff;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.latest-carousel-viewport {
+  overflow: hidden;
+  border-radius: var(--bb-radius);
+}
+
+.latest-carousel-track {
+  display: flex;
+  transition: transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.latest-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+}
+
+.latest-slide:not(.is-active) {
+  pointer-events: none;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 18px;
+  padding-top: 10px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(17, 20, 95, 0.24);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease, width 0.18s ease;
+}
+
+.carousel-dot.is-active {
+  width: 22px;
+  background: var(--bb-red);
+}
+
+.carousel-dot:focus-visible {
+  outline: 2px solid var(--bb-blue);
+  outline-offset: 3px;
+}
+
 .story-card,
 .side-widget,
 .video-card,
@@ -732,11 +823,26 @@ img {
   opacity: 1;
 }
 
-.story-media img {
+.story-media img,
+.story-placeholder {
   width: 100%;
   height: 100%;
+}
+
+.story-media img {
   object-fit: cover;
   transition: transform 0.42s ease;
+}
+
+.story-placeholder {
+  display: block;
+  background:
+    linear-gradient(135deg, rgba(32, 36, 138, 0.12), rgba(226, 27, 45, 0.1)),
+    #edf1f7;
+}
+
+.story-media img[src*="crime-khabar-logo"] {
+  opacity: 0;
 }
 
 .story-card:hover .story-media img,
@@ -1167,13 +1273,24 @@ img {
   transform: translateY(-2px);
 }
 
-.visual-card img {
+.visual-card img,
+.visual-placeholder {
   width: 100%;
   height: 100%;
   min-height: 210px;
+}
+
+.visual-card img {
   object-fit: cover;
   opacity: 0.82;
   transition: opacity 0.22s ease, transform 0.42s ease;
+}
+
+.visual-placeholder {
+  display: block;
+  background:
+    linear-gradient(135deg, rgba(32, 36, 138, 0.48), rgba(226, 27, 45, 0.36)),
+    #28314a;
 }
 
 .visual-card:hover img {
@@ -1325,6 +1442,96 @@ img {
 
 .subcategory-head h2 a {
   color: var(--bb-blue-dark);
+}
+
+.category-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px 28px;
+}
+
+.category-card-grid-full {
+  padding-top: 4px;
+}
+
+.category-post-card {
+  overflow: hidden;
+  border: 1px solid rgba(17, 35, 72, 0.08);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(17, 35, 72, 0.06);
+  transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+
+.category-post-card:hover {
+  border-color: rgba(226, 27, 45, 0.22);
+  box-shadow: 0 14px 30px rgba(17, 35, 72, 0.12);
+  transform: translateY(-3px);
+}
+
+.category-post-media {
+  display: block;
+  aspect-ratio: 16 / 8.8;
+  background: #edf1f7;
+  overflow: hidden;
+}
+
+.category-post-media img,
+.category-post-placeholder {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.category-post-media img {
+  object-fit: cover;
+  transition: transform 0.34s ease;
+}
+
+.category-post-placeholder {
+  background:
+    linear-gradient(135deg, rgba(32, 36, 138, 0.12), rgba(226, 27, 45, 0.1)),
+    #edf1f7;
+}
+
+.category-post-media img[src*="crime-khabar-logo"] {
+  opacity: 0;
+}
+
+.category-post-card:hover .category-post-media img {
+  transform: scale(1.035);
+}
+
+.category-post-body {
+  padding: 10px 12px 12px;
+}
+
+.category-post-body h2 {
+  display: -webkit-box;
+  min-height: 72px;
+  margin: 0;
+  overflow: hidden;
+  color: #111;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.category-post-body h2 a {
+  color: inherit;
+}
+
+.category-post-body h2 a:hover {
+  color: var(--bb-blue);
+}
+
+.category-post-date {
+  margin-top: 8px;
+  color: #111;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 .category-post-list {
@@ -1819,7 +2026,8 @@ img {
   }
 
   .news-grid,
-  .video-row {
+  .video-row,
+  .category-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2003,6 +2211,7 @@ img {
   .news-grid,
   .video-row,
   .visual-strip,
+  .category-card-grid,
   .category-tree > ul,
   .footer-inner {
     grid-template-columns: 1fr;
